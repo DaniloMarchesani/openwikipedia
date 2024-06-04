@@ -5,6 +5,10 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
 import Navbar from "./components/Navbar";
+import Register from "./pages/auth/Register";
+import GettingStartedPage from "./pages/GettingStarted";
+import DocsPage from "./pages/Docs";
+import ArticlePageSample from "./pages/ArticlePageSample";
 
 function App() {
   return (
@@ -16,8 +20,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/articles" element={<ArticlePageSample />} />
           <Route path="/about" element={<About />} />
-          <Route path="/getting-started" element={<About />} />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/getting-started" element={<GettingStartedPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

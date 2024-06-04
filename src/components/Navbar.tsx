@@ -13,13 +13,13 @@ const Navbar = () => {
       <div className="flex items-center justify-end gap-3">
         <div className="md:flex hidden">
           <Button variant={"link"}>
-            <Link to={"/"}>Getting Started</Link>
+            <Link to={"/getting-started"}>Getting Started</Link>
           </Button>
           <Button variant={"link"}>
             <Link to={"/docs"}>Docs</Link>
           </Button>
           <Button variant={"link"}>
-            <Link to={"/article"}>Articles</Link>
+            <Link to={"/articles"}>Articles</Link>
           </Button>
           <Button variant={"link"}>
             <Link to={"/about"}>About the project</Link>

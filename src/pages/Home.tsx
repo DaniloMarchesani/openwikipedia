@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+
 import { Button } from "@/components/ui/button";
 import { Github, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,10 +14,10 @@ const Home = () => {
         <AnimatedBg />
         <div className="mb-14">
             <h1 className="gradient-text text-7xl font-bold text-transparent animate-gradient drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">Open Wikipedia</h1>
-            <h3 className="mt-4 text-xl italic font-semibold">Your knowledge, offline and personalized</h3>
+            <h3 className="mt-4 text-xl italic font-semibold">Your knowledge, offline and personalized ✨</h3>
         </div>
 
-        <p className="max-w-[70%] mb-10 ">
+        <p className="max-w-[70%] mb-10 p-2">
           Welcome to Open Wikipedia, your ultimate app for exploring,
           downloading, and customizing articles from Wikipedia, all in offline
           mode. Designed for professors, students, and group learning
