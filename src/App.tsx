@@ -5,12 +5,17 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/auth/Login";
 import Navbar from "./components/Navbar";
-import Register from "./pages/auth/Register";
 import GettingStartedPage from "./pages/GettingStarted";
 import DocsPage from "./pages/Docs";
 import ArticlePageSample from "./pages/ArticlePageSample";
+import RegisterPage from "./pages/auth/RegisterPage";
+import { ToastContainer } from "react-toastify";
+import { useTheme } from "./context/ThemeProvider";
 
-function App() {
+function App() {  
+
+  const { theme }= useTheme();
+
   return (
     <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased">
       <div className="flex w-full md:p-12 p-4">
@@ -20,7 +25,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/articles" element={<ArticlePageSample />} />
           <Route path="/about" element={<About />} />
           <Route path="/docs" element={<DocsPage />} />
@@ -31,10 +36,22 @@ function App() {
       </main>
       <footer className="p-10 text-base-content rounded text-center">
         <p>
-          Copyright © 2024 - An Open source project made with ❤
-          by Danilo Marchesani 🐱‍👤
+          Copyright © 2024 - An Open source project made with ❤ by Danilo
+          Marchesani 🐱‍👤
         </p>
       </footer>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={theme === "dark" ? "dark" : "light"} 
+      />
     </div>
   );
 }

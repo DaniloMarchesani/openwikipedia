@@ -59,7 +59,7 @@ const Login = () => {
   return (
     <>
       <div className="flex flex-col items-stretch max-w-lg">
-        <h1 className="text-6xl font-bold mb-20">Login</h1>
+        <h1 className="text-4xl font-bold mb-10">Login</h1>
         <AnimatedBg />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

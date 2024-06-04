@@ -1,7 +1,6 @@
 
 import { TArticle, TUser } from "@/lib/types";
 import { create } from "zustand";
-import axios from "axios";
 
 interface IStoreContext {
     isAuthenticated: boolean,
@@ -16,11 +15,7 @@ interface IStoreContext {
 
 }
 
-const { BACKEND_URI } = import.meta.env;
 
-const api = axios.create({
-    baseURL: `${BACKEND_URI}/api`
-});
 
 const useAuthGuardStore = create<IStoreContext>((set) => ({
     isAuthenticated: false,

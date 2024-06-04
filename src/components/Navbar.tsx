@@ -4,8 +4,6 @@ import LoginButton from "./LoginButton";
 import { Button } from "./ui/button";
 import ThemeToggler from "./ThemeToggler";
 
-import MobileMenu from "./MobileMenu";
-
 const Navbar = () => {
   return (
     <nav className="flex flex-row items-center justify-between w-full">
@@ -24,9 +22,6 @@ const Navbar = () => {
           <Button variant={"link"}>
             <Link to={"/about"}>About the project</Link>
           </Button>
-        </div>
-        <div>
-          <MobileMenu />
         </div>
         <LoginButton />
         <ThemeToggler />
