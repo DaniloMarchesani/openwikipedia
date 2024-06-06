@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -11,15 +11,32 @@ import ArticlePageSample from "./pages/ArticlePageSample";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "./context/ThemeProvider";
+import useAuthGuardStore from "./context/AuthGuardStore";
+import { useEffect } from "react";
 
 function App() {  
 
+  const { isAuthenticated } = useAuthGuardStore();
+
   const { theme }= useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const token = localStorage.getItem("ACCESS_TOKEN");
+
+    if(!token) {
+      if(location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/") {
+        navigate("/login");
+      }
+    }
+
+  }, [])
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased">
       <div className="flex w-full md:p-12 p-4">
-        <Navbar />
+        {!isAuthenticated && <Navbar />}
       </div>
       <main className="md:p-16 p-6 w-full text-center flex flex-col justify-center items-center grow">
         <Routes>
@@ -36,8 +53,8 @@ function App() {
       </main>
       <footer className="p-10 text-base-content rounded text-center">
         <p>
-          Copyright © 2024 - An Open source project made with ❤ by Danilo
-          Marchesani 🐱‍👤
+          Copyright © 2024 - An Open source project made with 💖 by <Link to={"https://github.com/DaniloMarchesani"} className="underline italic">Danilo
+          Marchesani</Link> 🐱‍👤
         </p>
       </footer>
       <ToastContainer

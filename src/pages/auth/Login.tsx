@@ -19,8 +19,9 @@ import { User } from "lucide-react";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
+const {VITE_BACKEND_URI}  = import.meta.env;
+
 const Login = () => {
-  const { BACKEND_URI } = import.meta.env;
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () =>
@@ -37,16 +38,19 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<TLoginSchema> = (formData) => {
     axios
-      .post(`${BACKEND_URI}/api/auth/login`, formData)
+      .post(`${VITE_BACKEND_URI}/api/auth/login`, formData)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        login(response.data.user);
+        localStorage.setItem("ACCESS_TOKEN", response.data.token);
+        console.log(response.data);
+        //login(response.data.user);
+        const { id } = response.data;
         axios
-          .get(`${BACKEND_URI}/api/articles`, {
+          .get(`${VITE_BACKEND_URI}/api/user/id/${id}`, {
             headers: { Authorization: `Bearer ${response.data.token}` },
           })
           .then((response) => {
-            useAuthGuardStore.setState({ articles: response.data });
+            console.log(response.data);
+            login(response.data);
             navigate("/dashboard");
           });
       })

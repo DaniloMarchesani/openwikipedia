@@ -2,10 +2,6 @@
   @tailwind components;
   @tailwind utilities;
 
-  body * {
-    @apply transition-colors duration-200;
-}
-
   .reddit-mono-font {
     font-family: "Reddit Mono", monospace;
     font-optical-sizing: auto;
