@@ -11,32 +11,16 @@ import ArticlePageSample from "./pages/ArticlePageSample";
 import RegisterPage from "./pages/auth/RegisterPage";
 import { ToastContainer } from "react-toastify";
 import { useTheme } from "./context/ThemeProvider";
-import useAuthGuardStore from "./context/AuthGuardStore";
-import { useEffect } from "react";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 
 function App() {  
 
-  const { isAuthenticated } = useAuthGuardStore();
-
   const { theme }= useTheme();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const token = localStorage.getItem("ACCESS_TOKEN");
-
-    if(!token) {
-      if(location.pathname !== "/login" && location.pathname !== "/register" && location.pathname !== "/") {
-        navigate("/login");
-      }
-    }
-
-  }, [])
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased">
       <div className="flex w-full md:p-12 p-4">
-        {!isAuthenticated && <Navbar />}
+        <Navbar />
       </div>
       <main className="md:p-16 p-6 w-full text-center flex flex-col justify-center items-center grow">
         <Routes>
@@ -47,7 +31,10 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/docs" element={<DocsPage />} />
           <Route path="/getting-started" element={<GettingStartedPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<ProtectedRoutes />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

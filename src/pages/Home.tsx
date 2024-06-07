@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Github, Sparkles } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import AnimatedBg from "@/components/common/AnimatedBg";
-import useAuthGuardStore from "@/context/AuthGuardStore";
+import { useAuth } from "@/context/AuthContext";
 
 const Home = () => {
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthGuardStore();
+  const { isAuthenticated } = useAuth();
 
   if(isAuthenticated) {
     navigate("/dashboard");

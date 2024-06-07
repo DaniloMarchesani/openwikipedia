@@ -33,6 +33,20 @@ module.exports = {
           "50%": {backgroundPosition: "100% 50%"},
           "100%": {backgroundPosition: "0% 50%"},
         },
+        test: {
+          "0%": {
+            strokeDasharray: 400,
+            strokeDashoffset: 400,
+          },
+          "50%": {
+            strokeDasharray: 400,
+            strokeDashoffset: 200,
+          },
+          "100%":{
+            strokeDasharray: 400,
+            strokeDashoffset: 0,
+          }
+        },
         blob: {
           "0%": {
             transform: "translate(0px, 0px) scale(1)",

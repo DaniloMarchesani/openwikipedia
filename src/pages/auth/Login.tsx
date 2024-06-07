@@ -1,4 +1,4 @@
-import useAuthGuardStore from "@/context/AuthGuardStore";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import AnimatedBg from "@/components/common/AnimatedBg";
 import { User } from "lucide-react";
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/context/AuthContext";
 
 const {VITE_BACKEND_URI}  = import.meta.env;
 
@@ -27,7 +28,7 @@ const Login = () => {
   const togglePasswordVisibility = () =>
     setPasswordVisible((prevState) => !prevState);
 
-  const { login } = useAuthGuardStore();
+  const { login } = useAuth();
 
   const navigate = useNavigate();
 
@@ -43,10 +44,10 @@ const Login = () => {
         localStorage.setItem("ACCESS_TOKEN", response.data.token);
         console.log(response.data);
         //login(response.data.user);
-        const { id } = response.data;
+        const { id, token } = response.data;
         axios
           .get(`${VITE_BACKEND_URI}/api/user/id/${id}`, {
-            headers: { Authorization: `Bearer ${response.data.token}` },
+            headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {
             console.log(response.data);
