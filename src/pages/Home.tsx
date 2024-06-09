@@ -1,18 +1,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Github, Sparkles } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AnimatedBg from "@/components/common/AnimatedBg";
-import { useAuth } from "@/context/AuthContext";
+
 
 const Home = () => {
 
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-
-  if(isAuthenticated) {
-    navigate("/dashboard");
-  }
 
   return (
     <div className="flex flex-col w-full items-center grow">
