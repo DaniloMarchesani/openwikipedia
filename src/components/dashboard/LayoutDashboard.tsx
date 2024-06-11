@@ -6,7 +6,7 @@ const LayoutDashboard = ({ children }: { children: ReactNode}) => {
     return (
         <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased p-8 bg-gray-100">
             <TopNav />
-        <main className="md:p-16 p-6 w-full text-center flex flex-col justify-center items-center grow">
+        <main className="w-full text-center flex flex-col justify-center items-center grow">
             { children }
         </main>
         <footer className=" text-sm text-base-content rounded text-center flex items-center justify-between w-full">

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import Logo from "../Logo";
 import UserMenu from "./UserMenu";
 import UserFrame from "./UserFrame";
+import SearchBar from "./QuickSearchBar";
 
 
 
@@ -9,9 +9,9 @@ const TopNav = () => {
     return (
         <nav className="flex items-center justify-between w-full">
             <Link to={"/dashboard"}>
-                {/* <Logo /> */}
                 <UserFrame />
             </Link>
+            <SearchBar />
             <UserMenu />
         </nav>
     )
