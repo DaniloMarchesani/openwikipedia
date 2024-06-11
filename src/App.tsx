@@ -23,6 +23,7 @@ import axios from "axios";
 import { TUser } from "./lib/types";
 import { useAuth } from "./context/AuthContext";
 import ArticleSpec from "./pages/dashboard/ArticleSpec";
+import RenderArticle from "./pages/dashboard/RenderArticle";
 
 const { VITE_BACKEND_URI } = import.meta.env;
 
@@ -67,6 +68,7 @@ function App() {
             <Route path="articles" element={<p>articles here!!</p>} />
             <Route path="spec" element={<ArticleSpec />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="article/:title" element={<RenderArticle />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
