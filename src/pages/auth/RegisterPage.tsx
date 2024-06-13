@@ -15,7 +15,7 @@ import AnimatedBg from "@/components/common/AnimatedBg";
 
 const RegisterPage = () => {
 
-    const { BACKEND_URI } = import.meta.env;
+    const { VITE_BACKEND_URI, VITE_BACKEND_AUTH_ENDPOINT} = import.meta.env;
 
     const [success, setSuccess] = useState(false)
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -39,7 +39,7 @@ const RegisterPage = () => {
 
     const onSubmit: SubmitHandler<TRegisterSchema> = async (formData) => {
         try {
-            const response = await axios.post(`${BACKEND_URI}/api/auth/register`, formData);
+            const response = await axios.post(`${VITE_BACKEND_URI}${VITE_BACKEND_AUTH_ENDPOINT}/register`, formData);
             if(response.data.error) {
                 showWarningToast("Something went very wrong getting the data!");
                 form.setError("root", { message: response.data.error })

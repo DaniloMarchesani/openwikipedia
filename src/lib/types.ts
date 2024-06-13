@@ -1,21 +1,22 @@
 export type TArticle = {
-    id: string;
+    id?: string;
     title: string;
+    userId?: string;
     content: string;
-    timestamp: number;
-    articleHistory: TArticleHistory[];
+    timestamp?: number;
+    articleHistory?: TArticleHistory[];
 }
 
 export type TArticleHistory = {
-    id: string;
+    id?: string;
     articleId: string;
     title: string;
     content: string;
-    timestamp: number;
+    timestamp?: number;
 }
 
 export type TUser = {
-    id: string,
+    id?: string,
     token: string,
     username: string,
     password: string,
@@ -23,7 +24,7 @@ export type TUser = {
     firstname: string,
     lastname: string,
     role: string[],
-    address: {
+    address?: {
         street: string,
         city: string,
         houseNumber: string

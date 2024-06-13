@@ -1,8 +1,6 @@
 import {
-  Link,
   Route,
   Routes,
-  useLocation,
   useNavigate,
 } from "react-router-dom";
 import Home from "./pages/Home";

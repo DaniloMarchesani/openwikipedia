@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const LayoutDashboard = ({ children }: { children: ReactNode}) => {
     return (
-        <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased p-8 bg-gray-100">
+        <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased p-8 bg-slate-100">
             <TopNav />
         <main className="w-full text-center flex flex-col justify-center items-center grow">
             { children }

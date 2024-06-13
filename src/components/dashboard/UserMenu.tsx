@@ -45,7 +45,7 @@ import { useTheme } from "@/context/ThemeProvider"
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size={"icon"}><Menu /></Button>
+          <Button variant="outline" size={"icon"}><Menu className="h-4 w-4" /></Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56 mx-1">
           <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>

@@ -1,5 +1,5 @@
 import { TUser } from "@/lib/types";
-import { Children, ReactNode, createContext, useContext, useReducer } from "react";
+import { ReactNode, createContext, useContext, useReducer } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 

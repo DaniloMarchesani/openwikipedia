@@ -14,41 +14,43 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import { useEffect } from "react";
+import ArticleIcon from "./ArticleIcon";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
+import { Telescope } from "lucide-react";
 
 const ArticleFolderArea = () => {
-  const { articles } = useArticleStore();
+  const { articles, getArticles } = useArticleStore();
 
-  /* return (
-    <div className="bg-white rounded-3xl min-w-[75%] h-[calc(100vh/2)] p-12 border-gray-300 border-4 border-dashed flex items-center justify-center">
-      <ContextMenu>
-        {articles.length > 0
-          ? articles.map((article) => {
-              return (
-                <div
-                  key={article.id}
-                  className="bg-gray-100 p-4 rounded-xl my-4"
-                >
-                  <h1>{article.title}</h1>
-                  <p>{article.content}</p>
-                </div>
-              );
-            })
-          : "No articles found 🥲"}
-        <ContextMenuTrigger>Right click</ContextMenuTrigger>
-        <ContextMenuContent>
-          <ContextMenuItem>Profile</ContextMenuItem>
-          <ContextMenuItem>Billing</ContextMenuItem>
-          <ContextMenuItem>Team</ContextMenuItem>
-          <ContextMenuItem>Subscription</ContextMenuItem>
-        </ContextMenuContent>
-      </ContextMenu>
-    </div>
-  ); */
+  useEffect(() => {
+    getArticles();
+    console.log(articles);
+  }, []);
 
   return (
     <ContextMenu>
-      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-dashed text-sm p-10 bg-white">
-        <p>{articles.length === 0 && "No articles found yet! 🥲"}</p>
+      <h2 className="text-xl mb-2">Virtual Desk</h2>
+      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-dashed text-sm p-10 bg-white dark:bg-gray-950">
+        {articles.length === 0 ? (<p>No articles found!</p>) : (
+          <div className="flex flex-wrap">
+              {articles.map((article, index) => (
+                <div key={index} className="m-4 text-center grid grid-cols-5 gap-6 w-full">
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                  <ArticleIcon article={article} />
+                </div>
+              ))}
+            
+          </div>
+        )}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
         <ContextMenuItem inset>
@@ -92,6 +94,7 @@ const ArticleFolderArea = () => {
           <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
         </ContextMenuRadioGroup>
       </ContextMenuContent>
+      <Button asChild variant={"outline"} className="mt-4 text-blue-500"><Link to={"./explorer"}><Telescope className="w-4 h-4 mr-2" />See your Explorer</Link></Button>
     </ContextMenu>
   )
 };
