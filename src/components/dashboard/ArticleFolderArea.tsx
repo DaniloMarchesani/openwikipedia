@@ -1,4 +1,4 @@
-import useArticleStore from "@/context/ArticleStore";
+
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -14,41 +14,31 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { useEffect } from "react";
 import ArticleIcon from "./ArticleIcon";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Telescope } from "lucide-react";
+import { TArticle } from "@/lib/types";
 
-const ArticleFolderArea = () => {
-  const { articles, getArticles } = useArticleStore();
+interface IArticleFolderAreaProps {
+  articles: TArticle[];
 
-  useEffect(() => {
-    getArticles();
-    console.log(articles);
-  }, []);
+}
+
+const ArticleFolderArea = ({ articles }: IArticleFolderAreaProps) => {
+  
 
   return (
     <ContextMenu>
-      <h2 className="text-xl mb-2">Virtual Desk</h2>
-      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-dashed text-sm p-10 bg-white dark:bg-gray-950">
+      <h2 className="text-xl mb-2 font-semibold">Virtual Desk</h2>
+      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-dashed text-sm p-10 bg-white dark:bg-gray-950 overflow-y-scroll">
         {articles.length === 0 ? (<p>No articles found!</p>) : (
           <div className="flex flex-wrap">
               {articles.map((article, index) => (
                 <div key={index} className="m-4 text-center grid grid-cols-5 gap-6 w-full">
                   <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
-                  <ArticleIcon article={article} />
                 </div>
               ))}
-            
           </div>
         )}
       </ContextMenuTrigger>

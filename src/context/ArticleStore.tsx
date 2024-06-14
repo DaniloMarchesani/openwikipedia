@@ -62,7 +62,7 @@ const useArticleStore = create<ArticleStore>((set) => ({
         }
     },
 
-    deleteSearchedArticles: () => set((state) => ({ articles: [] })),
+    deleteSearchedArticles: () => set(() => ({ articles: [] })),
 
     deleteArticle: async (id) => { 
         set(() => ({ loading: true, error: null }));

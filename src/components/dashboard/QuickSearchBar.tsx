@@ -1,4 +1,4 @@
-import { useEffect, useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent } from "react";
 import { Input } from "../ui/input";
 import debounce from "debounce";
 import axios from "axios";
@@ -20,7 +20,7 @@ const QuickSearchBar = () => {
 
   const handleSearch = async (e: KeyboardEvent<HTMLInputElement>) => {
     try {
-      //if (e.key !== "Enter") return;
+      if (e.key !== "Enter") return;
       const trimVal = searchedValue.trim().toLowerCase();
       const api = `${VITE_WIKI_QUICK_SEARCH_URL}`;
       const params = {

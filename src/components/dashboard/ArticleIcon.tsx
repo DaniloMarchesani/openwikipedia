@@ -8,7 +8,7 @@ interface IArticleIconProps {
 
 const ArticleIcon = ({article}: IArticleIconProps) => {
     return (
-        <Link to={`/article/${article.id}`}>
+        <Link to={`./article/${article.title}`}>
             <div className="text-5xl cursor-pointer border rounded-lg p-3">
               {/* Qui puoi mettere l'icona dell'articolo, ad esempio un'immagine o un'icona FontAwesome */}
               📰

@@ -20,8 +20,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import { TUser } from "./lib/types";
 import { useAuth } from "./context/AuthContext";
-import ArticleSpec from "./pages/dashboard/ArticleSpec";
 import RenderArticle from "./pages/dashboard/RenderArticle";
+import { Toaster } from "./components/ui/toaster";
 
 const { VITE_BACKEND_URI } = import.meta.env;
 
@@ -63,14 +63,14 @@ function App() {
         </Route>
         <Route path="/dashboard" element={<ProtectedRoutes />}>
             <Route index element={<Dashboard />} />
-            <Route path="articles" element={<p>articles here!!</p>} />
-            <Route path="spec" element={<ArticleSpec />} />
+            <Route path="explorer" element={<p>articles here!!</p>} />
             <Route path="*" element={<NotFound />} />
             <Route path="article/:title" element={<RenderArticle />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
       <ToastContainer
         position="bottom-center"
         autoClose={5000}

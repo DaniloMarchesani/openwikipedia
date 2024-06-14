@@ -1,21 +1,30 @@
 
 import useArticleStore from "@/context/ArticleStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import ArticleFolderArea from "@/components/dashboard/ArticleFolderArea";
+import DailyArticleBanner from "@/components/dashboard/DailyArticleBanner";
 
 const Dashboard = () => {
+
+  const [loaded, setLoaded] = useState<boolean>(false);
   
-  const { articles } = useArticleStore();
+  const { articles, getArticles} = useArticleStore();
 
   useEffect(() => {
-    console.log(articles.length)
-  },[articles])
+
+    if(!loaded){
+      getArticles();
+      setLoaded(true);
+    }
+    
+    console.log(articles);
+  }, [loaded, articles]);
 
   return (
     <div className="w-full flex flex-col items-center justify-between">
-     
-        <ArticleFolderArea />
+        <DailyArticleBanner />
+        <ArticleFolderArea articles={articles}/>
 
     </div>
   );
