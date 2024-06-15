@@ -37,7 +37,7 @@ const ScrollToTop = () => {
       repeat: Infinity,
       repeatType: "loop"
     }}
-    className="fixed bottom-8 right-[30%]">
+    className="fixed bottom-8 left-1/2 drop-shadow-lg">
       {isVisible && (
         <Button variant={"outline"} 
             size={"icon"} 

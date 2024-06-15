@@ -26,3 +26,8 @@ export interface IWikipediaArticle {
     }
 
 }
+
+export interface IArticleStructure {
+    tag: string;
+    content: string | null;
+  }
