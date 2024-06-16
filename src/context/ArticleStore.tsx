@@ -30,7 +30,8 @@ const useArticleStore = create<ArticleStore>((set) => ({
             const response = await axios.get<TArticle[]>(`${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/all`, { 
                 headers: { "Authorization": `Bearer ${localStorage.getItem("ACCESS_TOKEN")}` } 
             });
-            set({ articles: response.data, loading: false });
+            console.log(response.data);
+            set({ articles: await response.data, loading: false });
         } catch (error) {
             set({ error: "An error occurred while trying to fetch the articles!", loading: false });
         }
@@ -39,9 +40,16 @@ const useArticleStore = create<ArticleStore>((set) => ({
         set(() => ({ loading: true, error: null }));
         //send article to the backend
         try {
+            const token = localStorage.getItem("ACCESS_TOKEN");
+            if (!token) {
+                set({ error: "No token found! Impossible to submit the request!", loading: false });
+                return;
+            }
+            
             const response = await axios.put<TArticle>(`${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/update/${id}`, article, {
-                headers: { "Authorization": `Bearer ${localStorage.getItem("ACCESS_TOKEN")}`}
+                headers: { "Authorization": `Bearer ${token}`}
             });
+            console.log("user id of the article " + article.userId);
             set((state) => ({ articles: state.articles.map( article => article.id === id ? response.data : article), loading: false }));
         } catch (error) {
             set({ error: "An error occurred while trying to update the article!", loading: false });

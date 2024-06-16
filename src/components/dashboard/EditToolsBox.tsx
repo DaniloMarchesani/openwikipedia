@@ -12,12 +12,14 @@ import {
   SelectValue,
 } from "../ui/select";
 
-
 interface IToolBoxProps {
   setIsEditing: (value: boolean) => void;
+  handleUpdateArticle?: () => void;
 }
 
-const EditToolsBox = ({ setIsEditing }: IToolBoxProps) => {
+const EditToolsBox = ({ setIsEditing, handleUpdateArticle}: IToolBoxProps) => {
+  
+
   return (
     <m.div
       initial={{ opacity: 0, y: -10 }}
@@ -64,7 +66,7 @@ const EditToolsBox = ({ setIsEditing }: IToolBoxProps) => {
 
 
       {/* Button for save the article */}
-      <Button variant={"ghost"} className="rounded-full" size={"icon"}>
+      <Button variant={"ghost"} className="rounded-full" size={"icon"} onClick={handleUpdateArticle}>
         <Save />
       </Button>
       {/* Button for close the edit mode */}

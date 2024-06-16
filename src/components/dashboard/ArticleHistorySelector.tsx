@@ -2,36 +2,45 @@ import { Clock8 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useArticleHistoryStore from "@/context/ArticleHistoryStore";
+import { Skeleton } from "../ui/skeleton";
+
 
 const ArticleHistorySelector = () => {
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
+    const { loading, error, historyArticles } = useArticleHistoryStore();
 
+    useEffect(() => {
+        console.log("Loading history articles...");
+    }, [loading])
 
-  const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-  );
-
-  
+    if(loading) {
+      return <Skeleton className="h-72 w-full" />
+    } 
 
   return (
     <div className="z-10">
       <Button className="rounded-full bg-sky-500 hover:bg-sky-600" size={"sm"} onClick={() => setIsVisible(!isVisible)}>
       <Clock8 className="h-4 w-4 mr-2" />Article History
       </Button>
-      {isVisible && (<ScrollArea className="h-72 rounded-xl mt-1 border bg-white">
+      {isVisible && (<ScrollArea className="h-max rounded-xl mt-1 border bg-white">
         <div 
-            className="p-4">
-          <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
-          {tags.map((tag) => (
-            <>
-              <div key={tag} className="text-sm">
-                {tag}
+            className="p-4 text-center md:text-left">
+          <h4 className="mb-4 text-sm font-medium leading-none">Old versions</h4>
+          <Separator />
+          {loading && <p>Loading...</p>}
+          {error && <p className="text-sm text-red-500">{error}</p>}
+          { historyArticles.length === 0 && <p className="text-sm text-gray-500 mt-2">No history found!</p>}
+          { historyArticles.map((article, index) => (
+            <div key={index} className="flex justify-between items-center">
+              <div>
+                <p className="text-sm font-medium">{article.title}</p>
+                <p className="text-xs text-gray-500">{article.timestamp}</p>
               </div>
-              <Separator className="my-2" />
-            </>
+              <Button variant={"default"} size={"sm"}>Restore</Button>
+            </div>
           ))}
         </div>
       </ScrollArea>)}

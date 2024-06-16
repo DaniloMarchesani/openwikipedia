@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { FileDown, Pencil, Save, Undo2 } from "lucide-react";
+import { Save, Undo2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TArticle } from "@/lib/types";
 import cleanText from "@/lib/cleanText";

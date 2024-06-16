@@ -2,10 +2,14 @@ import ArticleHistorySelector from "@/components/dashboard/ArticleHistorySelecto
 import EditToolsBox from "@/components/dashboard/EditToolsBox";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import useArticleHistoryStore from "@/context/ArticleHistoryStore";
+import useArticleStore from "@/context/ArticleStore";
+import HtmlObjectParser from "@/lib/HtmlObjectParser";
 import { IArticleStructure } from "@/lib/interfaces";
 import { TArticle } from "@/lib/types";
 import ScrollToTop from "@/utils/ScrollToTop";
 import axios from "axios";
+import debounce from "debounce";
 import { motion as m, useScroll } from "framer-motion";
 import { Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -17,23 +21,63 @@ const Article = () => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { scrollYProgress } = useScroll();
     const [dom ,setDom] = useState<IArticleStructure[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [ articleDetails, setArticleDetails ] = useState<TArticle | null>(null);
+    const { getHistoryArticles } = useArticleHistoryStore();
+    const { updateArticle } = useArticleStore();
 
     const location = useLocation();
 
-    const articleTitle = location.pathname.split("/")[3];
+    const articleId = location.pathname.split("/")[3];
 
     const editContentRef = useRef<HTMLDivElement>(null);
 
 
-    const hanbleInput = () => {
-        console.log("Input changed!");
+    const hanbleInput = debounce(() => {
+        const content = [editContentRef.current?.innerHTML];
+        const article: TArticle = {
+          title: articleDetails!.title,
+          ...articleDetails,
+          content: JSON.stringify(content)
+        };
+        setArticleDetails(article);
+    }, 300);
+
+    const handleUpdateArticle = () => {
+        if (!articleDetails) {
+          console.log("No article found! Impossible to update the article!");
+          setError("No article found! Impossible to update the article!");
+          return;
+        }
+        const formatter = new HtmlObjectParser();
+        const formattedContent = formatter.parseHtmlToObject(articleDetails.content);
+        const articleUpdated: TArticle = {
+          ...articleDetails,
+          content: JSON.stringify(formattedContent),
+        };
+        updateArticle(articleDetails.id!, articleUpdated);
+        console.log(articleDetails.userId);
+        console.log("Article updated successfully!");
     }
 
     useEffect(() => {
-        console.log(location.pathname);
-        const url = `${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/${articleTitle}`;
+        console.log(articleId);
+        /* console.log("Articles fetched " + articles);
+        const article = articles.find((article) => article.id === articleId);
+        if(!article) {
+            console.log("No article found! Impossible to fetch the article!");
+            setError("No article found! Impossible to fetch the article!");
+            return;
+        }
+        setArticleDetails(article);
+        const arrayOfContent: IArticleStructure[] = JSON.parse(article.content);
+        setDom(arrayOfContent);
+        getHistoryArticles(article.id!);
+        setIsLoading(false); */
+
+        const url = `${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/${articleId}`;
+
     
         const fetchArticle = async (api: string) => {
           try {
@@ -48,24 +92,26 @@ const Article = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(response.data);
             const article: TArticle = await response.data;
             const arrayOfContent: IArticleStructure[] = JSON.parse(article.content);
-            
+            setArticleDetails(article);
+            getHistoryArticles(article.id!);
             setDom(arrayOfContent);
           } catch (error) {
             console.error(error);
             setError("An error occured while fetching the article! 😢");
           } finally {
-            setLoading(false);
+            setIsLoading(false);
           }
         };
-
         fetchArticle(url);
+        console.log("Article fetched successfully!")
       }, []);
 
   return (
     <>
-      {isEditing && <EditToolsBox setIsEditing={setIsEditing} />}
+      {isEditing && <EditToolsBox setIsEditing={setIsEditing} handleUpdateArticle={handleUpdateArticle}/>}
       <div className=" flex gap-6 p-6">
         <div className="flex flex-col gap-3">
           {/* Button for trigger edit mode */}
@@ -95,10 +141,10 @@ const Article = () => {
           className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm"
         >
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
-            {articleTitle}
+            {articleDetails?.title}
           </h1>
           <div className="max-w-2xl my-6 text-center md:text-left">
-          {loading && <Skeleton className="w-[700px] h-[800px]" />}
+          {isLoading && <Skeleton className="w-[700px] h-[800px]" />}
             {error && (
               <p className="text-red-500 italic">{error} 😢 Try later!</p>
             )}
