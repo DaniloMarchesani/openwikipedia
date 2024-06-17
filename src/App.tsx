@@ -21,8 +21,11 @@ import axios from "axios";
 import { TUser } from "./lib/types";
 import { useAuth } from "./context/AuthContext";
 import RenderArticle from "./pages/dashboard/RenderArticle";
-import { Toaster } from "./components/ui/toaster";
 import Article from "./pages/dashboard/Article";
+import { Toaster } from "./components/ui/toaster";
+import AdvancedSearchPage from "./pages/dashboard/AdvancedSearchPage";
+import Explorer from "./pages/dashboard/Explorer";
+
 
 const { VITE_BACKEND_URI } = import.meta.env;
 
@@ -64,7 +67,8 @@ function App() {
         </Route>
         <Route path="/dashboard" element={<ProtectedRoutes />}>
             <Route index element={<Dashboard />} />
-            <Route path="explorer" element={<p>articles here!!</p>} />
+            <Route path="explorer" element={<Explorer />} />
+            <Route path="advanced-search" element={<AdvancedSearchPage />} />
             <Route path="*" element={<NotFound />} />
             <Route path="article/:title" element={<RenderArticle />} />
             <Route path="savedArticle/:title" element={<Article />} />

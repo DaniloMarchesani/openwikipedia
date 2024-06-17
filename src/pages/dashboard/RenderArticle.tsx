@@ -5,29 +5,30 @@ import { Button } from "@/components/ui/button";
 import { Save, Undo2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TArticle } from "@/lib/types";
-import cleanText from "@/lib/cleanText";
 import useArticleStore from "@/context/ArticleStore";
 import { useAuth } from "@/context/AuthContext";
-import ArticleHistorySelector from "@/components/dashboard/ArticleHistorySelector";
 import { motion as m, useScroll } from "framer-motion";
 import ScrollToTop from "@/utils/ScrollToTop";
 import EditToolsBox from "@/components/dashboard/EditToolsBox";
 import { IArticleStructure } from "@/lib/interfaces";
+import HtmlObjectParser from "@/lib/HtmlObjectParser";
+import { useToast } from "@/components/ui/use-toast";
 
 
 const RenderArticle = () => {
-  const location = useLocation();
+  const { state } = useLocation();
   const [dom, setDom] = useState<IArticleStructure[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isError, setIsError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const articleTitle = location.pathname.split("/")[3];
+  const articleKey = state.article.key || state.article.title;
 
 
   const { addArticle, error } = useArticleStore();
   const { user } = useAuth();
+  const { toast } = useToast();
 
   const saveArticle = async () => {
     // Save article to the database
@@ -40,13 +41,22 @@ const RenderArticle = () => {
       }
 
       const articleToSave: TArticle = {
-        title: articleTitle,
+        title: state.article.title,
         content: JSON.stringify(dom),
         userId: user?.id,
       };
 
       addArticle(articleToSave);
       console.log("Article saved successfully!", articleToSave);
+      toast({
+        title: "Article saved successfully!",
+        description: "You can find it in your articles!",
+        action: (
+          <Button variant="outline" size={"sm"} onClick={() => window.history.back()}>
+            Go back
+          </Button>
+        )
+      });
     } catch (error) {
       console.error(error);
       setIsError("An error occured while saving the article! 😢");
@@ -56,13 +66,21 @@ const RenderArticle = () => {
 
 
   useEffect(() => {
-    console.log(location.pathname);
-    const api = `https://api.wikimedia.org/core/v1/wikipedia/en/page/${articleTitle}/html`;
+    //const api = `https://api.wikimedia.org/core/v1/wikipedia/en/page/${articleKey}/html`;
+
+    const baseUrl = "https://api.wikimedia.org/core/v1/wikipedia/";
+    const language = state.language || "en";
+    const endpoint = `/page/${articleKey}/html`;
+
+    const api = `${baseUrl}${language}${endpoint}`;
 
     const fetchArticle = async (api: string) => {
       try {
         const response = await axios.get(api);
-        const parser = new DOMParser();
+
+        const formatter = new HtmlObjectParser();
+        const contentArray = formatter.parseHtmlToObject(response.data);
+        /* const parser = new DOMParser();
         const doc = parser.parseFromString(response.data, "text/html");
 
         const elements = doc.querySelectorAll("h2, h3, p");
@@ -73,7 +91,7 @@ const RenderArticle = () => {
             tag: element.tagName.toLowerCase(),
             content: cleanText(element.textContent!),
           });
-        });
+        }); */
 
         setDom(contentArray);
       } catch (error) {
@@ -104,8 +122,9 @@ const RenderArticle = () => {
           className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm"
         >
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
-            {articleTitle}
+            {state.article.title}
           </h1>
+          <span className="italic mt-4">{state.article.description}</span>
           {loading && <Skeleton className="w-full h-[1000px]" />}
           <div className="max-w-2xl my-6 text-center md:text-left">
             {error && (
@@ -128,7 +147,7 @@ const RenderArticle = () => {
                       {item.content}
                     </h3>
                   );
-                } else if (item.tag === "p") {
+                } else if (item.tag === "p" && item.content!.length > 0) {
                   return (
                     <p key={index} className="text-base leading-5 mb-6">
                       {item.content}
@@ -152,7 +171,6 @@ const RenderArticle = () => {
             </div>
           )}
         </div>
-        <ArticleHistorySelector />
         <ScrollToTop />
       </div>
     </>

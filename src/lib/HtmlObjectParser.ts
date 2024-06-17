@@ -1,4 +1,5 @@
 import { IArticleStructure } from "./interfaces";
+import cleanText from "./cleanText";
 
 class HtmlObjectParser {
     private parser: DOMParser;
@@ -16,7 +17,7 @@ class HtmlObjectParser {
     elements.forEach((element) => {
       contentArray.push({
         tag: element.tagName.toLowerCase(),
-        content: element.textContent!,
+        content: cleanText(element.textContent!),
       });
     });
 

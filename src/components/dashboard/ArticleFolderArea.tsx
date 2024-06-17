@@ -31,11 +31,11 @@ const ArticleFolderArea = ({ articles }: IArticleFolderAreaProps) => {
   return (
     <ContextMenu>
       <h2 className="text-xl mb-2 font-semibold">Virtual Desk</h2>
-      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-dashed text-sm p-10 bg-white dark:bg-gray-950 overflow-y-scroll">
+      <ContextMenuTrigger className="flex min-h-[calc(100vh/2)] w-[90%] items-center justify-center rounded-md border border-gray-700 border-dashed text-sm p-10 bg-white dark:bg-gray-950 overflow-y-scroll">
         {articles.length === 0 ? (<p>No articles found!</p>) : (
           <div className="flex flex-wrap">
               {articles.map((article, index) => (
-                <div key={index} className="m-4 text-center grid grid-cols-5 gap-6 w-full">
+                <div key={index} className="m-4">
                   <ArticleIcon article={article} />
                 </div>
               ))}
@@ -84,7 +84,7 @@ const ArticleFolderArea = ({ articles }: IArticleFolderAreaProps) => {
           <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
         </ContextMenuRadioGroup>
       </ContextMenuContent>
-      <Button asChild variant={"outline"} className="mt-4 text-blue-500"><Link to={"./explorer"}><Telescope className="w-4 h-4 mr-2" />See your Explorer</Link></Button>
+      <Button asChild variant={"outline"} className="mt-4 bg-[#3A86FF]"><Link to={"./explorer"}><Telescope className="w-4 h-4 mr-2" />See your Explorer</Link></Button>
     </ContextMenu>
   )
 };

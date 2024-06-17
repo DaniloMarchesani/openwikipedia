@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from "react";
+import { useState, KeyboardEvent} from "react";
 import { Input } from "../ui/input";
 import debounce from "debounce";
 import axios from "axios";
@@ -40,13 +40,6 @@ const QuickSearchBar = () => {
     }
   };
 
-  /* useEffect(() => {
-    if (searchedValue.length === 0) {
-      setOpen(false);
-      setArticlesFound(null);
-    }
-  }, [searchedValue]); */
-
   return (
     <div className="relative w-full flex items-center justify-center ">
       <Input
@@ -64,10 +57,13 @@ const QuickSearchBar = () => {
         {loading && <Spinner/>}
       { articlesFound && articlesFound.pages.map((article) => {
         return (
-          <Link to={"./article/" + article.title} key={article.id} onClick={() => {
-            setOpen(!open)
-            setLoading(!loading);
-            setSearchedValue("");
+          <Link to={"./article/" + article.key} 
+            state={{ article: article}}
+            key={article.id} 
+            onClick={() => {
+              setOpen(!open)
+              setLoading(!loading);
+              setSearchedValue("");
             }}>
               <ArticleItemCard article={article}/>
           </Link>

@@ -30,7 +30,6 @@ const useArticleStore = create<ArticleStore>((set) => ({
             const response = await axios.get<TArticle[]>(`${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/all`, { 
                 headers: { "Authorization": `Bearer ${localStorage.getItem("ACCESS_TOKEN")}` } 
             });
-            console.log(response.data);
             set({ articles: await response.data, loading: false });
         } catch (error) {
             set({ error: "An error occurred while trying to fetch the articles!", loading: false });

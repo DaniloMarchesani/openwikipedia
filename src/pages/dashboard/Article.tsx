@@ -112,7 +112,7 @@ const Article = () => {
   return (
     <>
       {isEditing && <EditToolsBox setIsEditing={setIsEditing} handleUpdateArticle={handleUpdateArticle}/>}
-      <div className=" flex gap-6 p-6">
+      <div className=" flex gap-6 p-6 md:p-12">
         <div className="flex flex-col gap-3">
           {/* Button for trigger edit mode */}
           <Button
