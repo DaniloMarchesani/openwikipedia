@@ -3,7 +3,7 @@ export type TArticle = {
     title: string;
     userId?: string;
     content: string;
-    timestamp?: number;
+    createdAt?: number;
     articleHistory?: TArticleHistory[];
 }
 
@@ -12,7 +12,7 @@ export type TArticleHistory = {
     articleId: string;
     title: string;
     content: string;
-    timestamp?: number;
+    modifiedAt?: number;
 }
 
 export type TUser = {

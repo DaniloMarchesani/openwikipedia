@@ -24,6 +24,11 @@ class HtmlObjectParser {
     return contentArray;
   }
 
+  parseJSONToObject(json: string) {
+    const contentArray: IArticleStructure[] = JSON.parse(json);
+    return contentArray;
+  }
+
 }
 
 export default HtmlObjectParser;

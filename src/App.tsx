@@ -71,7 +71,7 @@ function App() {
             <Route path="advanced-search" element={<AdvancedSearchPage />} />
             <Route path="*" element={<NotFound />} />
             <Route path="article/:title" element={<RenderArticle />} />
-            <Route path="savedArticle/:title" element={<Article />} />
+            <Route path="saved-article/:title" element={<Article />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

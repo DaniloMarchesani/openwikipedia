@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Save, Undo2 } from "lucide-react";
@@ -29,6 +29,7 @@ const RenderArticle = () => {
   const { addArticle, error } = useArticleStore();
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const saveArticle = async () => {
     // Save article to the database
@@ -41,7 +42,7 @@ const RenderArticle = () => {
       }
 
       const articleToSave: TArticle = {
-        title: state.article.title,
+        title: state.article.titles.normalized,
         content: JSON.stringify(dom),
         userId: user?.id,
       };
@@ -52,8 +53,8 @@ const RenderArticle = () => {
         title: "Article saved successfully!",
         description: "You can find it in your articles!",
         action: (
-          <Button variant="outline" size={"sm"} onClick={() => window.history.back()}>
-            Go back
+          <Button variant="outline" size={"sm"} onClick={() => navigate("/dashboard/explorer")}>
+            Go to Explorer
           </Button>
         )
       });
@@ -67,6 +68,7 @@ const RenderArticle = () => {
 
   useEffect(() => {
     //const api = `https://api.wikimedia.org/core/v1/wikipedia/en/page/${articleKey}/html`;
+    console.log(state);
 
     const baseUrl = "https://api.wikimedia.org/core/v1/wikipedia/";
     const language = state.language || "en";
@@ -80,18 +82,6 @@ const RenderArticle = () => {
 
         const formatter = new HtmlObjectParser();
         const contentArray = formatter.parseHtmlToObject(response.data);
-        /* const parser = new DOMParser();
-        const doc = parser.parseFromString(response.data, "text/html");
-
-        const elements = doc.querySelectorAll("h2, h3, p");
-        const contentArray: IArticleStructure[] = [];
-
-        elements.forEach((element) => {
-          contentArray.push({
-            tag: element.tagName.toLowerCase(),
-            content: cleanText(element.textContent!),
-          });
-        }); */
 
         setDom(contentArray);
       } catch (error) {
@@ -122,7 +112,7 @@ const RenderArticle = () => {
           className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm"
         >
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
-            {state.article.title}
+            {state.article.titles.normalized}
           </h1>
           <span className="italic mt-4">{state.article.description}</span>
           {loading && <Skeleton className="w-full h-[1000px]" />}

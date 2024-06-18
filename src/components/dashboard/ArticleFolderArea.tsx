@@ -84,7 +84,8 @@ const ArticleFolderArea = ({ articles }: IArticleFolderAreaProps) => {
           <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
         </ContextMenuRadioGroup>
       </ContextMenuContent>
-      <Button asChild variant={"outline"} className="mt-4 bg-[#3A86FF]"><Link to={"./explorer"}><Telescope className="w-4 h-4 mr-2" />See your Explorer</Link></Button>
+      <Button asChild variant={"outline"} className="mt-4 bg-[#3a86ff] dark:bg-[#3a86ff]"><Link to={"./explorer"} state={{ articles: articles
+      }}><Telescope className="w-4 h-4 mr-2" />See your Explorer</Link></Button>
     </ContextMenu>
   )
 };

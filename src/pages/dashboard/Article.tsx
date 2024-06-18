@@ -2,6 +2,8 @@ import ArticleHistorySelector from "@/components/dashboard/ArticleHistorySelecto
 import EditToolsBox from "@/components/dashboard/EditToolsBox";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ToastAction } from "@/components/ui/toast";
+import { toast } from "@/components/ui/use-toast";
 import useArticleHistoryStore from "@/context/ArticleHistoryStore";
 import useArticleStore from "@/context/ArticleStore";
 import HtmlObjectParser from "@/lib/HtmlObjectParser";
@@ -25,7 +27,7 @@ const Article = () => {
     const [error, setError] = useState<string | null>(null);
     const [ articleDetails, setArticleDetails ] = useState<TArticle | null>(null);
     const { getHistoryArticles } = useArticleHistoryStore();
-    const { updateArticle } = useArticleStore();
+    const { updateArticle, articles } = useArticleStore();
 
     const location = useLocation();
 
@@ -57,24 +59,21 @@ const Article = () => {
           content: JSON.stringify(formattedContent),
         };
         updateArticle(articleDetails.id!, articleUpdated);
-        console.log(articleDetails.userId);
+        const today = new Date();
+        toast({
+          title: "Article updated successfully!",
+          description: `at ${today.toLocaleTimeString()}`,
+          action: (
+            <ToastAction altText="Thank God">Got it!</ToastAction>
+          ),
+
+        })
+        setIsEditing(!isEditing);
         console.log("Article updated successfully!");
     }
 
     useEffect(() => {
         console.log(articleId);
-        /* console.log("Articles fetched " + articles);
-        const article = articles.find((article) => article.id === articleId);
-        if(!article) {
-            console.log("No article found! Impossible to fetch the article!");
-            setError("No article found! Impossible to fetch the article!");
-            return;
-        }
-        setArticleDetails(article);
-        const arrayOfContent: IArticleStructure[] = JSON.parse(article.content);
-        setDom(arrayOfContent);
-        getHistoryArticles(article.id!);
-        setIsLoading(false); */
 
         const url = `${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/${articleId}`;
 
@@ -107,11 +106,13 @@ const Article = () => {
         };
         fetchArticle(url);
         console.log("Article fetched successfully!")
-      }, []);
+      }, [articles]);
 
   return (
     <>
-      {isEditing && <EditToolsBox setIsEditing={setIsEditing} handleUpdateArticle={handleUpdateArticle}/>}
+      {isEditing && <EditToolsBox 
+      setIsEditing={setIsEditing} 
+      handleUpdateArticle={handleUpdateArticle}/>}
       <div className=" flex gap-6 p-6 md:p-12">
         <div className="flex flex-col gap-3">
           {/* Button for trigger edit mode */}
@@ -134,47 +135,49 @@ const Article = () => {
           className="fixed top-0 left-0 right-0 h-3 gradient-bg w-full z-20 origin-top-left"
         ></m.div>
         {/* Article content! */}
-        <div
-          ref={editContentRef}
-          onInput={hanbleInput}
-          contentEditable={isEditing}
-          className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm"
-        >
+        <div className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm">
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
-            {articleDetails?.title}
+              {articleDetails?.title}
           </h1>
-          <div className="max-w-2xl my-6 text-center md:text-left">
-          {isLoading && <Skeleton className="w-[700px] h-[800px]" />}
-            {error && (
-              <p className="text-red-500 italic">{error} 😢 Try later!</p>
-            )}
-            {dom &&
-              dom.map((item, index) => {
-                if (item.tag === "h2") {
-                  return (
-                    <h2 key={index} className="font-bold text-4xl mt-8 mb-3">
-                      {item.content}
-                    </h2>
-                  );
-                } else if (item.tag === "h3") {
-                  return (
-                    <h3
-                      key={index}
-                      className="font-semibold text-2xl mt-2 mb-1"
-                    >
-                      {item.content}
-                    </h3>
-                  );
-                } else if (item.tag === "p") {
-                  return (
-                    <p key={index} className="text-base leading-5 mb-6">
-                      {item.content}
-                    </p>
-                  );
-                } else {
-                  return null;
-                }
-              })}
+          <div
+            ref={editContentRef}
+            onInput={hanbleInput}
+            contentEditable={isEditing}
+          >
+            
+            <div className="max-w-2xl my-6 text-center md:text-left">
+            {isLoading && <Skeleton className="w-[700px] h-[800px]" />}
+              {error && (
+                <p className="text-red-500 italic">{error} 😢 Try later!</p>
+              )}
+              {dom &&
+                dom.map((item, index) => {
+                  if (item.tag === "h2") {
+                    return (
+                      <h2 key={index} className="font-bold text-4xl mt-8 mb-3">
+                        {item.content}
+                      </h2>
+                    );
+                  } else if (item.tag === "h3") {
+                    return (
+                      <h3
+                        key={index}
+                        className="font-semibold text-2xl mt-2 mb-1"
+                      >
+                        {item.content}
+                      </h3>
+                    );
+                  } else if (item.tag === "p") {
+                    return (
+                      <p key={index} className="text-base leading-5 mb-6">
+                        {item.content}
+                      </p>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
+            </div>
           </div>
         </div>
         <ArticleHistorySelector />

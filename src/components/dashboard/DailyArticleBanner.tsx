@@ -51,13 +51,13 @@ const DailyArticleBanner = () => {
                 exit={{ opacity: 0, y: -100, }}
                 transition={{ duration: 0.2}}   
                 className="w-full">
-                    { article ? (<div className="text-white text-sm flex items-center justify-center gap-2 gradient-bg animate-gradient border italic">
-                        <p>🗣️ Hey! Todays article is about <span className="font-semibold">{article?.title}</span></p>
-                        <Button asChild variant={"link"} size={"sm"}>
+                    { article ? (<div className="text-white p-1 text-sm flex items-center justify-center gap-2 gradient-bg animate-gradient border italic">
+                        <p>🗣️ Hey! Todays article is about <span className="font-semibold">{article?.titles.normalized}</span></p>
+                        <Button asChild className="rounded-full"  size={"sm"}>
                             <Link 
                             to={"./article/" + article?.title}
                             state={{ article: article}}
-                            ><Forward className="h-4 w-4 mr-2" />Read more</Link>
+                            ><Forward className="h-4 w-4 mr-1" />Take a Look </Link>
                         </Button>
                         <X  onClick={() => handleVisibility()}/>
                     </div>): (<Skeleton className="p-4 w-full h-10 mb-1"/>)}
