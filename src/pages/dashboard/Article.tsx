@@ -8,13 +8,14 @@ import useArticleHistoryStore from "@/context/ArticleHistoryStore";
 import useArticleStore from "@/context/ArticleStore";
 import HtmlObjectParser from "@/lib/HtmlObjectParser";
 import { IArticleStructure } from "@/lib/interfaces";
-import { TArticle } from "@/lib/types";
+import { TArticle, TArticleHistory } from "@/lib/types";
 import ScrollToTop from "@/utils/ScrollToTop";
 import axios from "axios";
 import debounce from "debounce";
 import { motion as m, useScroll } from "framer-motion";
 import { Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { set } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 
 const {VITE_BACKEND_URI, VITE_BACKEND_ARTICLE_ENDPOINT } = import.meta.env;
@@ -26,7 +27,7 @@ const Article = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [ articleDetails, setArticleDetails ] = useState<TArticle | null>(null);
-    const { getHistoryArticles } = useArticleHistoryStore();
+    const { getHistoryArticles, restoreHistoryArticle } = useArticleHistoryStore();
     const { updateArticle, articles } = useArticleStore();
 
     const location = useLocation();
@@ -37,14 +38,40 @@ const Article = () => {
 
 
     const hanbleInput = debounce(() => {
+      const parser = new HtmlObjectParser();
         const content = [editContentRef.current?.innerHTML];
+        const newContent = parser.parseHtmlToObject(editContentRef.current!.innerHTML);
+        //console.log(newContent);
         const article: TArticle = {
           title: articleDetails!.title,
           ...articleDetails,
-          content: JSON.stringify(content)
+          content: newContent
         };
+        console.log("Article input: " + typeof article.content);
+        
+        const updated = [...dom, newContent]
+        console.log("Updated content: ", updated)
+        setDom(newContent);
         setArticleDetails(article);
     }, 300);
+
+    const handleRestoreArticle = (article: TArticleHistory) => {
+        
+      try {
+        console.log("Restoring article with id: ", article.articleId);
+        restoreHistoryArticle(article);
+        
+        toast({
+          title: "Article restored successfully!",
+          description: "You can find it in your articles!",
+          action: (
+            <ToastAction altText="Go back">Got it!</ToastAction>
+          ),
+        })
+      } catch (error) {
+        console.error(error);
+      }
+  }
 
     const handleUpdateArticle = () => {
         if (!articleDetails) {
@@ -76,7 +103,6 @@ const Article = () => {
         console.log(articleId);
 
         const url = `${VITE_BACKEND_URI}${VITE_BACKEND_ARTICLE_ENDPOINT}/${articleId}`;
-
     
         const fetchArticle = async (api: string) => {
           try {
@@ -91,7 +117,7 @@ const Article = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data);
+
             const article: TArticle = await response.data;
             const arrayOfContent: IArticleStructure[] = JSON.parse(article.content);
             setArticleDetails(article);
@@ -109,7 +135,7 @@ const Article = () => {
       }, [articles]);
 
   return (
-    <>
+    <div>
       {isEditing && <EditToolsBox 
       setIsEditing={setIsEditing} 
       handleUpdateArticle={handleUpdateArticle}/>}
@@ -139,51 +165,54 @@ const Article = () => {
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
               {articleDetails?.title}
           </h1>
+          {/* CONTAINER OF THE article.content */}
           <div
             ref={editContentRef}
             onInput={hanbleInput}
             contentEditable={isEditing}
+            suppressContentEditableWarning={true} 
+            /* dangerouslySetInnerHTML={{ __html: articleDetails!.content }} */
           >
             
-            <div className="max-w-2xl my-6 text-center md:text-left">
+            <div key={articleId} className="max-w-2xl my-6 text-center md:text-left">
             {isLoading && <Skeleton className="w-[700px] h-[800px]" />}
               {error && (
                 <p className="text-red-500 italic">{error} 😢 Try later!</p>
               )}
-              {dom &&
-                dom.map((item, index) => {
-                  if (item.tag === "h2") {
-                    return (
-                      <h2 key={index} className="font-bold text-4xl mt-8 mb-3">
-                        {item.content}
-                      </h2>
-                    );
-                  } else if (item.tag === "h3") {
-                    return (
-                      <h3
-                        key={index}
-                        className="font-semibold text-2xl mt-2 mb-1"
-                      >
-                        {item.content}
-                      </h3>
-                    );
-                  } else if (item.tag === "p") {
-                    return (
-                      <p key={index} className="text-base leading-5 mb-6">
-                        {item.content}
-                      </p>
-                    );
-                  } else {
-                    return null;
-                  }
-                })}
+              <>
+                {dom &&
+                  dom.map((item, index) => {
+                    if (item.tag === "h2" && item.content!.length > 0) {
+                      return (
+                          <h2 key={index} className="font-bold text-4xl mt-8 mb-3">
+                            {item.content}
+                          </h2>
+                      );
+                    } else if (item.tag === "h3" && item.content!.length > 0) {
+                      return (
+                        <h3
+                          key={index}
+                          className="font-semibold text-2xl mt-2 mb-1"
+                        >
+                          {item.content}
+                        </h3>
+                      );
+                    } else if (item.tag === "p" && item.content!.length > 0) {
+                      return (
+                          <p key={index} className="text-base leading-5 mb-6">
+                            {item.content}
+                          </p>
+                      );
+                    }
+                  })}
+              </>
             </div>
           </div>
         </div>
-        <ArticleHistorySelector />
+        <ArticleHistorySelector handleRestoreArticle={handleRestoreArticle} />
         <ScrollToTop />
       </div>
-    </>
+    </div>
   );
 }
 

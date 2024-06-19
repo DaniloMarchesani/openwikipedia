@@ -54,7 +54,7 @@ function App() {
 }, [])
 
   return (
-    <>
+    <div>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/login" element={<Login />} />
@@ -89,7 +89,7 @@ function App() {
         pauseOnHover
         theme={theme === "dark" ? "dark" : "light"}
       />
-    </>
+    </div>
   );
 }
 

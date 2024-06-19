@@ -2,25 +2,22 @@ import { Clock8 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useArticleHistoryStore from "@/context/ArticleHistoryStore";
-import { AnimatePresence, motion as m } from "framer-motion";
+import { motion as m } from "framer-motion";
 import Spinner from "../common/Spinner";
 import { formatDate } from "@/lib/formatDate";
 import ModalArticle from "./modal/ModalArticle";
+import { TArticleHistory } from "@/lib/types";
 
+interface IArticleHistorySelectorProps {
+    handleRestoreArticle: (article: TArticleHistory) => void;
+}
 
-const ArticleHistorySelector = () => {
+const ArticleHistorySelector = ({ handleRestoreArticle }: IArticleHistorySelectorProps) => {
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const { loading, error, historyArticles } = useArticleHistoryStore();
-
-    useEffect(() => {
-        console.log("Loading history articles...");
-        console.log(historyArticles);
-        historyArticles.forEach(article => console.log(article.modifiedAt));
-    }, [loading])
-
 
   return (
    
@@ -28,7 +25,6 @@ const ArticleHistorySelector = () => {
         <Button className="rounded-full bg-sky-500 hover:bg-sky-600" size={"sm"} onClick={() => setIsVisible(!isVisible)}>
         <Clock8 className="h-4 w-4 mr-2" />Article History
         </Button>
-        <AnimatePresence>
         {isVisible && (<m.div
           initial={{ opacity: 0, height:0 }}
           animate={{ opacity: 1, height: "auto"}}
@@ -49,12 +45,11 @@ const ArticleHistorySelector = () => {
                   <p className="text-xs text-gray-500">{formatDate(article.modifiedAt!)}</p>
                 </div>
                 {/* <Button className="bg-blue-400 rounded-full" size={"sm"}><ArchiveRestore className="w-4 h-4 mr-2" />Restore</Button> */}
-                <ModalArticle name={"Restore"} article={article} />
+                <ModalArticle name={"Restore"} article={article} handleRestoreArticle={handleRestoreArticle} />
               </div>
             ))}
           </div>
         </ScrollArea></m.div>)}
-        </AnimatePresence>
       </div>
   );
 };

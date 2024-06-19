@@ -17,13 +17,13 @@ import { formatDate } from "@/lib/formatDate";
 interface IModalArticleProps {
     name: string;
     article: TArticleHistory;
+    handleRestoreArticle: (article: TArticleHistory) => void;
 }
 
-const ModalArticle = ({name, article}: IModalArticleProps) => {
+const ModalArticle = ({name, article, handleRestoreArticle}: IModalArticleProps) => {
 
     const parser = new HtmlObjectParser();
     const elements = parser.parseJSONToObject(article.content);
-    
 
   return (
     <Dialog>
@@ -69,8 +69,8 @@ const ModalArticle = ({name, article}: IModalArticleProps) => {
 
         </div>
         <DialogFooter>
-          <Button><ArchiveRestore className="w-4 h-4 mr-2" />Restore</Button>
-          <DialogClose><Button variant={"secondary"} ><Ban className="w-4 h-4 mr-2" />Cancel</Button></DialogClose>
+          <DialogTrigger asChild><Button onClick={() => handleRestoreArticle(article)}><ArchiveRestore className="w-4 h-4 mr-2" />Restore</Button></DialogTrigger>
+          <DialogClose asChild><Button variant={"secondary"} ><Ban className="w-4 h-4 mr-2" />Cancel</Button></DialogClose>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -62,7 +62,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <div>
       <div className="flex flex-col items-stretch max-w-lg">
         <h1 className="text-4xl font-bold mb-10">Login</h1>
         <AnimatedBg />
@@ -125,7 +125,7 @@ const Login = () => {
           </Button>
         </Form>
       </div>
-    </>
+    </div>
   );
 };
 

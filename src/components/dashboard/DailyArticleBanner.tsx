@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { IDailyArticleStructure } from "@/lib/interfaces";
 import { Skeleton } from "../ui/skeleton";
 import { Forward, X } from "lucide-react";
-import { AnimatePresence, motion as m } from "framer-motion";
+import { motion as m } from "framer-motion";
 
 const { VITE_WIKI_ACCESS_TOKEN} = import.meta.env;
 
@@ -44,26 +44,26 @@ const DailyArticleBanner = () => {
     }, [article]);
 
     return (
-            <AnimatePresence>
-                {isVisibile && <m.div 
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0}}
-                exit={{ opacity: 0, y: -100, }}
-                transition={{ duration: 0.2}}   
-                className="w-full">
-                    { article ? (<div className="text-white p-1 text-sm flex items-center justify-center gap-2 gradient-bg animate-gradient border italic">
-                        <p>🗣️ Hey! Todays article is about <span className="font-semibold">{article?.titles.normalized}</span></p>
-                        <Button asChild className="rounded-full"  size={"sm"}>
-                            <Link 
-                            to={"./article/" + article?.title}
-                            state={{ article: article}}
-                            ><Forward className="h-4 w-4 mr-1" />Take a Look </Link>
-                        </Button>
-                        <X  onClick={() => handleVisibility()}/>
-                    </div>): (<Skeleton className="p-4 w-full h-10 mb-1"/>)}
-                </m.div>}
-            </AnimatePresence>
-    
+                <div>
+                    {isVisibile && <m.div 
+                    initial={{ opacity: 0, y: -100 }}
+                    animate={{ opacity: 1, y: 0}}
+                    exit={{ opacity: 0, y: -100, }}
+                    transition={{ duration: 0.2}}   
+                    className="w-full">
+                        { article ? (<div className="text-white p-1 text-sm flex items-center justify-center gap-2 gradient-bg animate-gradient border italic">
+                            <p>🗣️ Hey! Todays article is about <span className="font-semibold">{article?.titles.normalized}</span></p>
+                            <Button asChild className="rounded-full"  size={"sm"}>
+                                <Link 
+                                to={"./article/" + article?.title}
+                                state={{ article: article}}
+                                ><Forward className="h-4 w-4 mr-1" />Take a Look </Link>
+                            </Button>
+                            <X  onClick={() => handleVisibility()}/>
+                        </div>): (<Skeleton className="p-4 w-full h-10 mb-1"/>)}
+                    </m.div>}
+        
+                </div>
     );
 }
 

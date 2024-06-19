@@ -23,13 +23,15 @@ const RenderArticle = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const articleKey = state.article.key || state.article.title;
-
-
   const { addArticle, error } = useArticleStore();
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  type TArticleKey = string | null;
+
+  const articleKey: TArticleKey = state.article.key || state.article.title;
 
   const saveArticle = async () => {
     // Save article to the database
@@ -42,7 +44,7 @@ const RenderArticle = () => {
       }
 
       const articleToSave: TArticle = {
-        title: state.article.titles.normalized,
+        title: state.article.title || state.article.titles?.normalized, 
         content: JSON.stringify(dom),
         userId: user?.id,
       };
@@ -68,11 +70,12 @@ const RenderArticle = () => {
 
   useEffect(() => {
     //const api = `https://api.wikimedia.org/core/v1/wikipedia/en/page/${articleKey}/html`;
-    console.log(state);
 
+    if(!loading) return;
     const baseUrl = "https://api.wikimedia.org/core/v1/wikipedia/";
     const language = state.language || "en";
     const endpoint = `/page/${articleKey}/html`;
+    
 
     const api = `${baseUrl}${language}${endpoint}`;
 
@@ -92,12 +95,13 @@ const RenderArticle = () => {
       }
     };
     fetchArticle(api);
-  }, []);
+    console.log("Fetching article!")
+  }, [dom, location]);
 
   const { scrollYProgress } = useScroll();
 
   return (
-    <>
+    <div>
       {isEditing && <EditToolsBox setIsEditing={setIsEditing} />}
       <div className=" flex gap-6 p-6">
         <div className="flex flex-col gap-3">
@@ -112,7 +116,7 @@ const RenderArticle = () => {
           className="bg-white dark:bg-gray-800 drop-shadow-md p-10 h-full flex flex-col justify-center items-center rounded-sm"
         >
           <h1 className="text-4xl md:text-5xl xl:text-6xl font-bold text-center">
-            {state.article.titles.normalized}
+            { state.article.titles ? state.article.titles.normalized : state.article.title }
           </h1>
           <span className="italic mt-4">{state.article.description}</span>
           {loading && <Skeleton className="w-full h-[1000px]" />}
@@ -163,7 +167,7 @@ const RenderArticle = () => {
         </div>
         <ScrollToTop />
       </div>
-    </>
+    </div>
   );
 };
 

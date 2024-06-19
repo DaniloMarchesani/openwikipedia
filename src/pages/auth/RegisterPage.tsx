@@ -61,13 +61,13 @@ const RegisterPage = () => {
         <div className="flex flex-col w-full items-center max-w-lg">
             <AnimatedBg />
             {success ? (
-                <>
+                <div>
                     <h1 className="text-3xl font-bold">Registered Successfully!🎉</h1>
                     <p>Login now and have fun using the app!</p>
                     <Button asChild>
                         <Link to={"/login"}>Go to Login</Link>
                     </Button>
-                </>
+                </div>
                
             ) :(
                 <div className="w-full">

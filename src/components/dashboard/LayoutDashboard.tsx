@@ -5,7 +5,7 @@ import DailyArticleBanner from "./DailyArticleBanner";
 
 const LayoutDashboard = ({ children }: { children: ReactNode}) => {
     return (
-        <>
+        <div>
         <DailyArticleBanner />
             <div className="min-h-screen flex flex-col justify-between items-center dark:bg-black dark:text-slate-200 antialiased p-8">
                 <TopNav />
@@ -21,7 +21,7 @@ const LayoutDashboard = ({ children }: { children: ReactNode}) => {
             </p>
             </footer>
             </div> 
-        </>
+        </div>
     )
 }
 

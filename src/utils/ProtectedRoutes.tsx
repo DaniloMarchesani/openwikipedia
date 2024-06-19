@@ -11,11 +11,11 @@ const ProtectedRoutes = () => {
     
 
     return (
-        <>
+        <div>
             <LayoutDashboard>
                 <Outlet />
             </LayoutDashboard>
-        </>
+        </div>
     )
 }
 

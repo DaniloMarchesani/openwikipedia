@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AnimatePresence, motion as m } from "framer-motion";
+import { motion as m } from "framer-motion";
 import {
   Select,
   SelectContent,
@@ -59,7 +59,6 @@ const AdvancedSearchPage = () => {
   
 
   return (
-    <AnimatePresence>
         <div className="w-full">
             <m.div
                 initial={{ opacity: 0, y: -100 }}
@@ -124,7 +123,6 @@ const AdvancedSearchPage = () => {
                     </div>}
             </div>
         </div>
-    </AnimatePresence>
   );
 };
 
