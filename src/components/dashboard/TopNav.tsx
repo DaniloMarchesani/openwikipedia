@@ -12,7 +12,7 @@ const TopNav = () => {
   return (
     <nav className="flex items-center justify-between w-full">
         { location.pathname === "/dashboard" ? (
-            <div className="">
+            <div className="w-full flex">
                 <Link to={"/dashboard"}>
                 {/* <UserFrame /> */}
                 <Avatar>
@@ -29,7 +29,7 @@ const TopNav = () => {
               <UserMenu />
             </div>
         ) : (
-            <div>
+            <div className="w-full flex items-center justify-between">
             <Link to={"/dashboard"} className="flex items-center justify-center hover:bg-white dark:hover:bg-gray-800 rounded-full px-4 py-2"><ArrowLeft className="h-4 w-4 mr-2"/>Go Back</Link>
             <UserMenu />
             </div>

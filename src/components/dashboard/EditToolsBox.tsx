@@ -26,7 +26,7 @@ const EditToolsBox = ({ setIsEditing, handleUpdateArticle}: IToolBoxProps) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.3, delay: 0.2, ease: "easeInOut" }}
-      className="z-50 fixed top-4 p-1 bg-white dark:bg-gray-900 dark:border dark:border-slate-700 flex item-center justify-center rounded-full drop-shadow-xl gap-2"
+      className="z-50 fixed top-4 inset-x-1 w-max left-1/2 -translate-y-1/2 p-1 bg-white dark:bg-gray-900 dark:border dark:border-slate-700 flex item-center justify-center rounded-full drop-shadow-xl gap-2"
     >
       
       {/* Toggle group for text formatting */}

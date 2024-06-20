@@ -25,6 +25,7 @@ import Article from "./pages/dashboard/Article";
 import { Toaster } from "./components/ui/toaster";
 import AdvancedSearchPage from "./pages/dashboard/AdvancedSearchPage";
 import Explorer from "./pages/dashboard/Explorer";
+import ProfilePage from "./pages/dashboard/ProfilePage";
 
 
 const { VITE_BACKEND_URI } = import.meta.env;
@@ -68,6 +69,7 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoutes />}>
             <Route index element={<Dashboard />} />
             <Route path="explorer" element={<Explorer />} />
+            <Route path="profile" element={<ProfilePage />} />
             <Route path="advanced-search" element={<AdvancedSearchPage />} />
             <Route path="*" element={<NotFound />} />
             <Route path="article/:title" element={<RenderArticle />} />

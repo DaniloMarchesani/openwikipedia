@@ -17,6 +17,7 @@ import {
     User,
     UserPlus,
     Users,
+    WorkflowIcon,
   } from "lucide-react"
   
   import { Button } from "@/components/ui/button"
@@ -36,11 +37,13 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/context/AuthContext"
 import { useTheme } from "@/context/ThemeProvider"
+import { useNavigate } from "react-router-dom"
   
   const UserMenu = () => {
 
     const { user, logout } = useAuth();
     const { setTheme } = useTheme();
+    const navigate = useNavigate();
 
     return (
       <DropdownMenu>
@@ -51,21 +54,26 @@ import { useTheme } from "@/context/ThemeProvider"
           <DropdownMenuLabel>{user?.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/dashboard/profile")}>
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+              <WorkflowIcon className="mr-2 h-4 w-4" />
+              <span>Dashboard</span>
+              <DropdownMenuShortcut>⇧⌘D</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <CreditCard className="mr-2 h-4 w-4" />
               <span>Billing</span>
               <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
+            </DropdownMenuItem> */}
+            {/* <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
               <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem>
               <Keyboard className="mr-2 h-4 w-4" />
               <span>Keyboard shortcuts</span>
@@ -74,10 +82,10 @@ import { useTheme } from "@/context/ThemeProvider"
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Users className="mr-2 h-4 w-4" />
               <span>Team</span>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <SunMoon className="mr-2 h-4 w-4" />
@@ -96,11 +104,11 @@ import { useTheme } from "@/context/ThemeProvider"
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Plus className="mr-2 h-4 w-4" />
               <span>New Team</span>
               <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem>

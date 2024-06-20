@@ -15,7 +15,7 @@ import debounce from "debounce";
 import { motion as m, useScroll } from "framer-motion";
 import { Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { set } from "react-hook-form";
+
 import { useLocation } from "react-router-dom";
 
 const {VITE_BACKEND_URI, VITE_BACKEND_ARTICLE_ENDPOINT } = import.meta.env;
@@ -37,7 +37,7 @@ const Article = () => {
     const editContentRef = useRef<HTMLDivElement>(null);
 
 
-    const hanbleInput = debounce(() => {
+    /* const hanbleInput = () => {
       const parser = new HtmlObjectParser();
         const content = [editContentRef.current?.innerHTML];
         const newContent = parser.parseHtmlToObject(editContentRef.current!.innerHTML);
@@ -45,7 +45,7 @@ const Article = () => {
         const article: TArticle = {
           title: articleDetails!.title,
           ...articleDetails,
-          content: newContent
+          content: JSON.stringify(newContent)
         };
         console.log("Article input: " + typeof article.content);
         
@@ -53,7 +53,17 @@ const Article = () => {
         console.log("Updated content: ", updated)
         setDom(newContent);
         setArticleDetails(article);
-    }, 300);
+    }; */
+
+    const hanbleInput = debounce(() => {
+      const content = [editContentRef.current?.innerHTML];
+      const article: TArticle = {
+        title: articleDetails!.title,
+        ...articleDetails,
+        content: JSON.stringify(content)
+      };
+      setArticleDetails(article);
+  }, 300);
 
     const handleRestoreArticle = (article: TArticleHistory) => {
         
@@ -132,6 +142,7 @@ const Article = () => {
         };
         fetchArticle(url);
         console.log("Article fetched successfully!")
+        console.log(dom)
       }, [articles]);
 
   return (

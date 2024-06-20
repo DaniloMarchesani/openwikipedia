@@ -16,7 +16,7 @@ export type TArticleHistory = {
 }
 
 export type TUser = {
-    id?: string,
+    id: string,
     token: string,
     username: string,
     password: string,
